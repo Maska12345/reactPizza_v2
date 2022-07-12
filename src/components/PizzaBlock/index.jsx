@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
 
 
-function PizzaBlock({title,price,imageUrl,sizes,types}) {
+
+function Index({title,price,imageUrl,sizes,types}) {
     console.log(sizes)
     const typeNames = ['тонкое','традиционное'];
 
@@ -51,4 +52,4 @@ function PizzaBlock({title,price,imageUrl,sizes,types}) {
     );
 };
 
-export default PizzaBlock;
+export default Index;
