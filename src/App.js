@@ -10,10 +10,7 @@ import {
     Route,
 } from "react-router-dom";
 
-// import pizzas from '../src/assets/pizzas';
 
-
-const pizzas=[];
 
 
 
@@ -24,13 +21,14 @@ function App() {
     <div className="App">
       <div className="wrapper">
       <Header />
+      <div>some text</div>
         <div className="content">
           <div className="container">
               <Routes>
                 <Route path='/' element={<Home />} />
                 <Route path='/cart' element={<Cart />} />
                 <Route path='*' element={<NotFound /> } />
-              </Routes>
+              </Routes>0
 
             {/*<Home />*/}
             {/**/}
