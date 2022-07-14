@@ -21,7 +21,7 @@ function App() {
     <div className="App">
       <div className="wrapper">
       <Header />
-      <div>some text</div>
+      <div>some tetthrthyrxt</div>
         <div className="content">
           <div className="container">
               <Routes>
