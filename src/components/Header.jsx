@@ -1,6 +1,6 @@
 import React from 'react';
-import logoSVG from '../assets/img/pizza-logo.svg'
-import { Link } from 'react-router-dom'
+import logoSVG from '../assets/img/pizza-logo.svg';
+import { Link } from 'react-router-dom';
 
 function Header() {
     return(
