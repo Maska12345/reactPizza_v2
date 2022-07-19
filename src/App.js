@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState} from 'react';
 import './scss/app.scss';
 
 import Home from "./pages/Home";
@@ -10,19 +10,14 @@ import {
     Route,
 } from "react-router-dom";
 
-
-
-const pizzas=[];
-
-
-
 function App() {
 
+    const [searchValue,setSearchValue] = useState('');
 
   return (
     <div className="App">
       <div className="wrapper">
-      <Header />
+      <Header searchValue={searchValue} setSearchValue={setSearchValue} />
         <div className="content">
 
               <Routes>
