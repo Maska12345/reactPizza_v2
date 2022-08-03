@@ -8,7 +8,7 @@ function Sort() {
     const sort = useSelector((state)=> state.filter.sort);
 
     const [open,setOpen]=useState(false);
-    const list = [
+  const list = [
         {name:'популярности desc',sortProperty:'rating'},
         {name:'популярности asc',sortProperty:'-rating'},
         {name:'цене desc',sortProperty:'price'},
