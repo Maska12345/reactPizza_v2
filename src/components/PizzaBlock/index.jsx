@@ -5,9 +5,12 @@ import {addItem} from "../../redux/slices/cartSlice";
 
 function Index({id,title,price,imageUrl,sizes,types,rating}) {
     const dispatch=useDispatch();
+    const cartItem = useSelector((state) => state.cart.items.find((obj) => obj.id === id));
     const typeNames = ['тонкое','традиционное'];
     const [activeType,setActiveType] = useState(0);
     const [activeSize,setActiveSize] = useState(0);
+
+    const addedCount = cartItem ? cartItem.count : 0;
 
     const onClickAdd = () =>{
         const item={
@@ -16,7 +19,7 @@ function Index({id,title,price,imageUrl,sizes,types,rating}) {
             price,
             imageUrl,
             type:typeNames[activeType],
-            size:activeSize
+            size:sizes[activeSize]
         };
         dispatch(addItem(item));
     };
@@ -58,7 +61,7 @@ function Index({id,title,price,imageUrl,sizes,types,rating}) {
                             />
                         </svg>
                         <span>Добавить</span>
-                        <i>0</i>
+                        {addedCount > 0 && <i>{addedCount}</i>}
                     </button>
                 </div>
             </div>
