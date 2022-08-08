@@ -11,81 +11,97 @@ import {setCategoryId, setCurrentPage, setFilters} from "../redux/slices/filterS
 import axios from 'axios';
 import qs from 'qs';
 import { useNavigate } from 'react-router-dom';
+import {fetchPizzas} from "../redux/slices/pizzaSlice";
 
 
 const Home = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const {categoryId,sort,currentPage} = useSelector((state) => state.filter);
+    const {items, status} = useSelector((state) => state.pizza);
+    const {categoryId, sort, currentPage} = useSelector((state) => state.filter);
 
     const {searchValue} = useContext(SearchContext);
-    const [items, setItems] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
 
 
-    const onChangePage = (number) =>{
+    const onChangePage = (number) => {
         dispatch(setCurrentPage(number))
     };
-
-    useEffect(()=>{
-        if(window.location.search){
-            const params = qs.parse(window.location.search.substring(1))
-        }
-
-    },[]);
 
 
     const onChangeCategory = (id) => {
         dispatch(setCategoryId(id));
     }
 
-    useEffect(() => {
-        setIsLoading(true);
+    // useEffect(() => {
+    //     setIsLoading(true);
+    //
+    //     const order = sort.sortProperty.includes('-') ? 'asc' : 'desc';
+    //     const sortBy = sort.sortProperty.replace('-', '');
+    //     const category = categoryId > 0 ? `category=${categoryId}` : '';
+    //     const search = searchValue ? `&search=${searchValue}` : '';
+    //
+    //     axios.get(`https://62c9bcd84795d2d81f811fa0.mockapi.io/items?page=${currentPage}&limit=4&${
+    //             category}&sortBy=${sortBy}&order=${order}${search}`)
+    //         .then((res) =>{
+    //             setItems(res.data);
+    //             setIsLoading(false);
+    //         });
+    //     window.scrollTo(0, 0)
+    // }, [categoryId, sort.sortProperty, searchValue, currentPage]);
 
+
+    const GetPizzas = async () => {
         const order = sort.sortProperty.includes('-') ? 'asc' : 'desc';
         const sortBy = sort.sortProperty.replace('-', '');
         const category = categoryId > 0 ? `category=${categoryId}` : '';
         const search = searchValue ? `&search=${searchValue}` : '';
 
-        axios.get(`https://62c9bcd84795d2d81f811fa0.mockapi.io/items?page=${currentPage}&limit=4&${
-                category}&sortBy=${sortBy}&order=${order}${search}`)
-            .then((res) =>{
-                setItems(res.data);
-                setIsLoading(false);
-            });
-        window.scrollTo(0, 0)
-    }, [categoryId, sort.sortProperty, searchValue, currentPage]);
+        dispatch(fetchPizzas({
+                order,
+                sortBy,
+                category,
+                search,
+                currentPage,
+            }
+        ));
 
-    useEffect(()=>{
-        const queryString = qs.stringify({
-                sortProperty:sort.sortProperty,
+
+        useEffect(() => {
+            GetPizzas();
+
+        }, [categoryId, sort.sortProperty, searchValue, currentPage]);
+
+
+        useEffect(() => {
+            const queryString = qs.stringify({
+                sortProperty: sort.sortProperty,
                 categoryId,
                 currentPage
             });
-        navigate(`?${queryString}`);
-    },[categoryId, sort.sortProperty, currentPage]);
+            navigate(`?${queryString}`);
+        }, [categoryId, sort.sortProperty, currentPage]);
 
-    const pizzas = items.map((obj) => (<PizzaBlock key={obj.id} {...obj}/>));
-    const sceletons = [...Array(6)].map((_, index) => <Skeleton key={index}/>);
-    return (
-        <>
-            <div className="container">
-                <div className="content__top">
-                    <Categories value={categoryId} onChangeCategory={onChangeCategory}/>
-                    <Sort />
+        const pizzas = items.map((obj) => (<PizzaBlock key={obj.id} {...obj}/>));
+        const sceletons = [...Array(6)].map((_, index) => <Skeleton key={index}/>);
+        return (
+            <>
+                <div className="container">
+                    <div className="content__top">
+                        <Categories value={categoryId} onChangeCategory={onChangeCategory}/>
+                        <Sort/>
+                    </div>
+                    <h2 className="content__title">Все пиццы</h2>
+                    <div className="content__items">
+                        {
+                            status === 'loading' ? sceletons : pizzas
+
+                        }
+                    </div>
+                    <Pagination currentPage={currentPage} onChangePage={onChangePage}/>
                 </div>
-                <h2 className="content__title">Все пиццы</h2>
-                <div className="content__items">
-                    {
-                        isLoading ? sceletons : pizzas
 
-                    }
-                </div>
-                <Pagination currentPage={currentPage} onChangePage={onChangePage}/>
-            </div>
-
-        </>
-    );
-};
-
+            </>
+        );
+    };
+}
 export default Home;
