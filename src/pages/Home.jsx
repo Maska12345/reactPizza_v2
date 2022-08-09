@@ -63,7 +63,7 @@ const Home = () => {
                 search,
                 currentPage,
             }
-        ));
+        ))}
 
 
         useEffect(() => {
@@ -102,6 +102,5 @@ const Home = () => {
 
             </>
         );
-    };
 }
 export default Home;
