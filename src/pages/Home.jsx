@@ -91,12 +91,21 @@ const Home = () => {
                         <Sort/>
                     </div>
                     <h2 className="content__title">Все пиццы</h2>
-                    <div className="content__items">
-                        {
-                            status === 'loading' ? sceletons : pizzas
+                    {
+                        status === 'error' ? (
+                        <div>
+                            <h2>Произошла Ошибка =(</h2>
+                            <p>
+                                К сожалению не удалось получить пиццы...
+                            </p>
+                        </div>
+                        ) : (
+                        <div
+                     className="content__items">
 
-                        }
-                    </div>
+                            {status === 'loading' ? sceletons : pizzas}
+
+                    </div>)}
                     <Pagination currentPage={currentPage} onChangePage={onChangePage}/>
                 </div>
 
